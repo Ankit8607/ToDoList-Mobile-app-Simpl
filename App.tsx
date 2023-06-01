@@ -16,8 +16,8 @@ let lst=[];
 const EmptyStateScreen = () => {
   return (
     <View style={styles.empty}>
-      <Text>No items to display </Text> 
-      <Text style={{marginTop: 10}}>Please press "Add" to add new items</Text>
+      <Text style={{fontFamily: 'Cochin', fontSize: 18,}}>No items to display </Text> 
+      <Text style={{marginTop: 10, fontFamily: 'Cochin', fontSize: 18,}}>Please press "Add" to add new items</Text>
     </View>
   );
 };
@@ -28,22 +28,22 @@ function TodoItem({item,handleRemoveItem,navigation,isFocused}){
     isFocused && setIsClicked(false);
   },[isFocused]);
   return(
-    <View key={item.id} style={{ marginBottom: 10 }}>
+    <View key={item.id} style={{ marginBottom: 10, borderWidth: 1, width:"80%",borderRadius:10}}>
             <TouchableOpacity onPress={()=>setIsClicked(true)}>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.title}</Text>
-              <Text style={{ fontSize: 14 }}>{item.description}</Text>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal:10, fontFamily: 'Cochin'}}>{item.title}</Text>
+              <Text style={{ fontSize: 18, marginHorizontal:10, fontFamily: 'Cochin'}}>{item.description}</Text>
             </TouchableOpacity>              
             {isClicked && (
-              <View style={{ flexDirection: 'row', marginTop: 5 }}>
+              <View style={{ flexDirection: 'row', marginTop: 3 }}>
                 <TouchableOpacity
-                  style={{ padding: 5, backgroundColor: 'lightcoral', marginRight: 5 }}
+                  style={{ padding: 5, backgroundColor: 'lightcoral', marginHorizontal: 10, borderRadius: 5}}
                   onPress={() => {setIsClicked(false),handleRemoveItem(item.id)}}>
-                  <Text>Delete</Text>
+                  <Text style={{fontSize: 14}}>Delete</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={{ padding: 5, backgroundColor: 'lightgreen', marginRight: 5 }}
+                  style={{ padding: 5, backgroundColor: 'lightgreen', marginRight: 5, borderRadius: 5 }}
                   onPress={() => {setIsClicked(false),navigation.navigate('EditTask', { task: item })}}>
-                  <Text>Edit</Text>
+                  <Text style={{fontSize: 14}}>Edit</Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -112,7 +112,6 @@ function ToDoList({ navigation }) {
   const [description, setDescription] = useState('');
 
   const handleAddTask = async () => {
-    // Alert.alert("at handle"+description);
     if (title.trim() != '' && description.trim() != '') {
       try {
         const task = { id: Date.now(), title: title, description: description };
@@ -136,7 +135,7 @@ function ToDoList({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <SafeAreaView style={{marginTop:140}}>
+      <SafeAreaView style={{marginTop:140, marginHorizontal:5, width: "90%",alignItems:'center'}}>
         <TextInput
           placeholder='Enter Title'
           style={styles.input}
@@ -145,23 +144,20 @@ function ToDoList({ navigation }) {
         />
         <TextInput
           placeholder='Enter Discription'
-          multiline={true}
+          // multiline={true}
           numberOfLines={3}
           style={styles.input}
           onChangeText={(text) => setDescription(text)}
           value={description}
         />
       </SafeAreaView>
-      <View style={{flex:1, flexDirection: 'row'}}>
-        <Button
-            title="Confirm"
-            onPress={()=>{title!=""?handleAddTask():Alert.alert("Please enter title")}}
-          />
-          <Button
-            title="Cancel"
-            onPress={() => navigation.goBack()}
-          />
-
+      <View style={{flex:1, flexDirection: 'row', marginHorizontal:20}}>
+        <TouchableOpacity style={styles.button} onPress={()=>{title!=""?handleAddTask():Alert.alert("Please enter title")}}>
+          <Text style={styles.buttonText}>Confirm</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+          <Text style={styles.buttonText}>Cancel</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -209,10 +205,10 @@ const EditTaskScreen = ({ route, navigation }) => {
         value={description}
         onChangeText={(text) => setDescription(text)}
       />
-      <TouchableOpacity style={styles.button} onPress={handleEditTask}>
+      <TouchableOpacity style={styles.editbutton} onPress={handleEditTask}>
         <Text style={styles.buttonText}>Confirm</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+      <TouchableOpacity style={styles.editbutton} onPress={() => navigation.goBack()}>
         <Text style={styles.buttonText}>Cancel</Text>
       </TouchableOpacity>
     </View>
@@ -227,8 +223,8 @@ const MyStack = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} options={{title: 'Welcome'}} />
-        <Stack.Screen name="ToDoList" component={ToDoList} />
-        <Stack.Screen name="EditTask" component={EditTaskScreen} />
+        <Stack.Screen name="ToDoList" component={ToDoList} options={{title: 'ToDo!'}} />
+        <Stack.Screen name="EditTask" component={EditTaskScreen} options={{title: 'Edit!'}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -245,18 +241,43 @@ const styles=StyleSheet.create({
     borderColor: 'red',
     borderWidth: 5,
     borderRadius: 15,
+    fontSize:10,
   },
   button: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: 'lightblue',
-    marginBottom: 10,
+    backgroundColor: '#00aeef',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    marginBottom:300,
+    fontSize: 20,
+    shadowOffset: {width: 2, height: 4}, 
+    shadowColor: '#171717',  
+    shadowOpacity: 0.3,  
+    shadowRadius: 3,  
+  },
+  editbutton:{
+    backgroundColor: '#00aeef',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginVertical: 8,
+    borderRadius: 10,
+    fontSize: 20,
+    shadowOffset: {width: 2, height: 4}, 
+    shadowColor: '#171717',  
+    shadowOpacity: 0.3,  
+    shadowRadius: 3,
   },
   input: {
+    fontFamily: 'Cochin',
+    width: '60%',
+    // textAlign: 'center',
     height: 40,
     margin: 12,
+    fontSize: 20,
     borderWidth: 1,
     padding: 10,
+    borderRadius:10
   },
   container: {
     flex: 1,
@@ -268,12 +289,17 @@ const styles=StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     right: 20,
+    borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: 'lightblue',
+    backgroundColor: '#00aeef',
+    shadowOffset: {width: 2, height: 4}, 
+    shadowColor: '#171717',  
+    shadowOpacity: 0.3,  
+    shadowRadius: 3, 
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
