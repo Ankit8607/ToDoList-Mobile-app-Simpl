@@ -1,4 +1,4 @@
-# ToDoProject
+# ToDo List Mobile App
 
 I built a Mobile app (IOS) in react native during my intership at Simpl.
 
